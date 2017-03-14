@@ -16,12 +16,29 @@ function getRepoContributors(repoOwner, repoName, cb) {
   }
 
   request(options, function (error, response, body) {
-    console.log(response.statusCode);
-    console.log(response.statusMessage);
-  })
+    if (error) {
+      console.log("Error", error);
+      return false;
+    }
+
+    if (response && response.statusCode !== 200) {
+      console.log("Response was not 200!", response);
+      return false;
+    }
+
+    let data = JSON.parse(body);
+
+    if (data && data.length) {
+      data.forEach(cb);
+    } else {
+      console.log("No data found");
+    }
+
+  });
 }
 
-getRepoContributors("jquery", "jquery", function (err, result) {
-  console.log("Errors:", err);
-  console.log("Result:", result);
+getRepoContributors("jquery", "jquery", function (result) {
+  console.log(result.avatar_url);
+  //console.log(result.id);
+
 });
