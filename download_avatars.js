@@ -55,6 +55,14 @@ function downloadImageByURL(url, filePath) {
   }).pipe(fs.createWriteStream(filePath));
 }
 
-getRepoContributors("jquery", "jquery", function (result) {
+var owner = process.argv[2];
+var repo = process.argv[3];
+
+if (owner && repo) {
+  getRepoContributors(owner, repo, function (result) {
    downloadImageByURL(result.avatar_url, 'avatars/' + result.login + '.jpg');
 });
+} else {
+  console.log("You must supply the repo owner followed by repo name.")
+}
+
